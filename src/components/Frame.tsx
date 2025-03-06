@@ -150,7 +150,7 @@ export default function Frame() {
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
   return (
-    <>
+    <React.Fragment>
       <head>
         <meta property="og:title" content={PROJECT_TITLE} />
         <meta property="og:description" content={PROJECT_DESCRIPTION} />
@@ -160,11 +160,11 @@ export default function Frame() {
         <meta property="fc:frame:post_url" content={`${baseUrl}/api/post`} />
       </head>
       <div
-        style={{
+        style={{ 
           paddingTop: context?.client.safeAreaInsets?.top ?? 0,
           paddingBottom: context?.client.safeAreaInsets?.bottom ?? 0,
           paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
-          paddingRight: context?.client.safeAreaInsets?.right ?? 0,
+          paddingRight: context?.client.safeAreaInsets?.right ?? 0
         }}
       >
         <div className="w-[300px] mx-auto py-2 px-2">
@@ -239,6 +239,6 @@ export default function Frame() {
           </div>
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 }
