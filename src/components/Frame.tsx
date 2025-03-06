@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useRef, useMemo } from "react";
 import { sha256 } from 'js-sha256';
 import { useStore } from "~/store";
 import { Badge } from "~/components/ui/badge";
@@ -42,6 +42,15 @@ function ExampleCard() {
     </Card>
   );
 }
+
+const MemoizedBadge = React.memo(
+  ({ label, value }: { label: string; value: number }) => (
+    <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
+      {label}: {value.toLocaleString()}
+    </Badge>
+  ),
+  (prev, next) => prev.value === next.value
+);
 
 export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
@@ -159,16 +168,24 @@ export default function Frame() {
         }}
       >
         <div className="w-[300px] mx-auto py-2 px-2">
-          <GameCanvas />
-          <AutoCollector />
-          <div className="flex justify-center gap-2 mb-4">
-            <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
-              🎩 Hats: {useStore(state => state.hats.toLocaleString())}
-            </Badge>
-            <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
-              👆 Clicks: {useStore(state => state.clickCount.toLocaleString())}
-            </Badge>
-          </div>
+          {useMemo(() => (
+            <>
+              <React.memo(GameCanvas) />
+              <React.memo(AutoCollector) />
+            </>
+          ), [])}
+          {useMemo(() => (
+            <div className="flex justify-center gap-2 mb-4">
+              <MemoizedBadge 
+                label="🎩 Hats" 
+                value={useStore(state => state.hats)} 
+              />
+              <MemoizedBadge
+                label="👆 Clicks"
+                value={useStore(state => state.clickCount)}
+              />
+            </div>
+          ), [])}
           <div 
             className="mt-4 flex justify-center"
             onTouchStart={(e) => {
