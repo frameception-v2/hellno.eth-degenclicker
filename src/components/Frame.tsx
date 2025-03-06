@@ -130,19 +130,18 @@ Frame.displayName = 'Frame';
 
       // Load state from localStorage or URL
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('state')) {
-        const savedState = localStorage.getItem('gameState');
-        if (savedState) {
-          try {
-            const state = JSON.parse(atob(savedState));
-            useStore.setState({
-              clickCount: state.c,
-              hats: state.h,
-              lastCollection: state.t
-            });
-          } catch (e) {
-            console.error('Failed to load saved state:', e);
-          }
+      // Load existing state from localStorage
+      const savedState = localStorage.getItem('gameState');
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          useStore.setState({
+            clickCount: state.c || 0,
+            hats: state.h || 0,
+            lastCollection: state.t || Date.now()
+          });
+        } catch (e) {
+          console.error('Failed to load saved state:', e);
         }
       }
 
@@ -243,15 +242,12 @@ Frame.displayName = 'Frame';
               onClick={async () => {
                 const state = useStore.getState();
                 const stateString = JSON.stringify({
-                  v: 1,
                   c: state.clickCount,
                   h: state.hats,
                   t: state.lastCollection
                 });
-                const base64State = btoa(stateString);
-                localStorage.setItem('gameState', base64State);
+                localStorage.setItem('gameState', stateString);
                 const url = new URL(window.location.href);
-                url.searchParams.set('state', 'shared');
                 navigator.clipboard.writeText(url.toString());
               }}
             >
