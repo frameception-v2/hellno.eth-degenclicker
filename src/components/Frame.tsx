@@ -129,19 +129,31 @@ export default function Frame() {
     return <div>Loading...</div>;
   }
 
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+
   return (
-    <div
-      style={{
-        paddingTop: context?.client.safeAreaInsets?.top ?? 0,
-        paddingBottom: context?.client.safeAreaInsets?.bottom ?? 0,
-        paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
-        paddingRight: context?.client.safeAreaInsets?.right ?? 0,
-      }}
-    >
-      <div className="w-[300px] mx-auto py-2 px-2">
-        <GameCanvas />
-        <AutoCollector />
+    <>
+      <head>
+        <meta property="og:title" content={PROJECT_TITLE} />
+        <meta property="og:description" content={PROJECT_DESCRIPTION} />
+        <meta property="og:image" content={`${baseUrl}/api/og`} />
+        <meta property="fc:frame" content="vNext" />
+        <meta property="fc:frame:image" content={`${baseUrl}/api/og`} />
+        <meta property="fc:frame:post_url" content={`${baseUrl}/api/post`} />
+      </head>
+      <div
+        style={{
+          paddingTop: context?.client.safeAreaInsets?.top ?? 0,
+          paddingBottom: context?.client.safeAreaInsets?.bottom ?? 0,
+          paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
+          paddingRight: context?.client.safeAreaInsets?.right ?? 0,
+        }}
+      >
+        <div className="w-[300px] mx-auto py-2 px-2">
+          <GameCanvas />
+          <AutoCollector />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -19,7 +19,7 @@ Here's the optimized implementation checklist:
 - [ ] Implement state serialization/deserialization with URL params (Sharing)
 
 **Polish & Mobile**
-- [ ] Configure Farcaster Frame metadata in layout headers (Social Integration)
+- [x] Configure Farcaster Frame metadata in layout headers (Social Integration)
 - [ ] Add touch-optimized swipe gestures for upgrade panel (Mobile Controls)
 - [ ] Implement orientation change handler with canvas resize (Responsive)
 
