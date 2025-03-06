@@ -35,9 +35,15 @@ export function UpgradePanel({
     },
   ];
 
-  const togglePanel = useCallback(() => {
+  const togglePanel = useCallback((open: boolean) => {
     const panel = document.querySelector("[data-upgrade-panel]");
-    panel?.classList.toggle("translate-x-full");
+    if (panel) {
+      panel.classList.toggle("translate-x-full", !open);
+      // Add haptic feedback
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }
   }, []);
 
   return (

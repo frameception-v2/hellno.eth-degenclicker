@@ -46,6 +46,7 @@ export default function Frame() {
   const [context, setContext] = useState<Context.FrameContext>();
 
   const [added, setAdded] = useState(false);
+  const swipeStart = useRef<{x: number; y: number} | null>(null);
 
   const [addFrameResult, setAddFrameResult] = useState("");
 
@@ -158,7 +159,34 @@ export default function Frame() {
         <div className="w-[300px] mx-auto py-2 px-2">
           <GameCanvas />
           <AutoCollector />
-          <div className="mt-4 flex justify-center">
+          <div 
+            className="mt-4 flex justify-center"
+            onTouchStart={(e) => {
+              const touch = e.touches[0];
+              swipeStart.current = { x: touch.clientX, y: touch.clientY };
+            }}
+            onTouchMove={(e) => {
+              if (!swipeStart.current) return;
+              const touch = e.touches[0];
+              const deltaX = touch.clientX - swipeStart.current.x;
+              const deltaY = touch.clientY - swipeStart.current.y;
+              
+              // Only trigger horizontal swipes
+              if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                e.preventDefault();
+                if (Math.abs(deltaX) > 30) { // 30px threshold
+                  const panel = document.querySelector("[data-upgrade-panel]");
+                  if (deltaX > 0) {
+                    panel?.classList.remove("translate-x-full");
+                  } else {
+                    panel?.classList.add("translate-x-full");
+                  }
+                  swipeStart.current = null;
+                }
+              }
+            }}
+            onTouchEnd={() => swipeStart.current = null}
+          >
             <PurpleButton 
               onClick={() => {
                 const state = useStore.getState();
