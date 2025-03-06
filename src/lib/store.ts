@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { debounce } from 'lodash-es'
 
 interface GameState {
   totalHats: number
@@ -27,6 +28,13 @@ const store = create<GameState & GameActions>()(
       upgrades: { jacek: 0, hat: 0, crypto: 0 },
       lastCollect: Date.now(),
       version: 1,
+      
+      handleClick: debounce(() => {
+        set({
+          clicks: get().clicks + 1,
+          totalHats: get().totalHats + 1 + get().calculateAutoProduction()
+        })
+      }, 100, { leading: true, trailing: false }),
       
       handleClick: () => set({
         clicks: get().clicks + 1,

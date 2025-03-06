@@ -6,10 +6,22 @@ import { useViewport } from '~/lib/hooks/useViewport';
 export default function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { width, height } = useViewport();
+  const handleClick = useStore(state => state.handleClick);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Setup click handler with visual feedback
+    const onClick = () => {
+      handleClick();
+      // Temporary click feedback until particle system is implemented
+      canvas.style.transform = 'scale(0.95)';
+      setTimeout(() => canvas.style.transform = 'scale(1)', 100);
+    };
+    
+    canvas.addEventListener('click', onClick);
+    return () => canvas.removeEventListener('click', onClick);
 
     // WebGL context setup
     const gl = canvas.getContext('webgl2') || canvas.getContext('experimental-webgl');
