@@ -1,13 +1,6 @@
 "use client";
 
 import React, { useEffect, useCallback, useState, useRef, useMemo } from "react";
-// Using Web Crypto API for SHA-256
-async function sha256(message: string) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
 import { useStore } from "~/lib/store";
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
@@ -30,7 +23,7 @@ import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
-import { PROJECT_TITLE, PROJECT_DESCRIPTION, PROJECT_ID } from "~/lib/constants";
+import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
 import GameCanvas from "~/components/GameCanvas";
 import AutoCollector from "~/components/AutoCollector";
 import { ErrorBoundary } from "~/components/ErrorBoundary";
@@ -135,6 +128,24 @@ Frame.displayName = 'Frame';
       console.log("Calling ready");
       sdk.actions.ready({});
 
+      // Load state from localStorage or URL
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('state')) {
+        const savedState = localStorage.getItem('gameState');
+        if (savedState) {
+          try {
+            const state = JSON.parse(atob(savedState));
+            useStore.setState({
+              clickCount: state.c,
+              hats: state.h,
+              lastCollection: state.t
+            });
+          } catch (e) {
+            console.error('Failed to load saved state:', e);
+          }
+        }
+      }
+
       // Set up a MIPD Store, and request Providers.
       const store = createStore();
 
@@ -238,13 +249,9 @@ Frame.displayName = 'Frame';
                   t: state.lastCollection
                 });
                 const base64State = btoa(stateString);
+                localStorage.setItem('gameState', base64State);
                 const url = new URL(window.location.href);
-                url.searchParams.set('state', base64State);
-                
-                // Add cryptographic hash for verification
-                const hash = await sha256(base64State + PROJECT_ID);
-                url.searchParams.set('hash', hash);
-
+                url.searchParams.set('state', 'shared');
                 navigator.clipboard.writeText(url.toString());
               }}
             >
