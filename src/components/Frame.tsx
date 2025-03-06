@@ -157,6 +157,30 @@ export default function Frame() {
         <div className="w-[300px] mx-auto py-2 px-2">
           <GameCanvas />
           <AutoCollector />
+          <div className="mt-4 flex justify-center">
+            <PurpleButton 
+              onClick={() => {
+                const state = useStore.getState();
+                const stateString = JSON.stringify({
+                  v: 1,
+                  c: state.clickCount,
+                  h: state.hats,
+                  t: state.lastCollection
+                });
+                const base64State = btoa(stateString);
+                const url = new URL(window.location.href);
+                url.searchParams.set('state', base64State);
+                
+                // Add cryptographic hash for verification
+                const hash = sha256(base64State + PROJECT_ID);
+                url.searchParams.set('hash', hash);
+
+                navigator.clipboard.writeText(url.toString());
+              }}
+            >
+              Share Progress
+            </PurpleButton>
+          </div>
         </div>
       </div>
     </>
