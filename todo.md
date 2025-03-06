@@ -11,7 +11,7 @@ Here's the optimized implementation checklist:
 - [x] Create click handler in store with debounce and connect to canvas onClick (Click Logic)
 - [x] Build floating number animation system in GameCanvas (Visual Feedback)
 - [x] Add upgrade panel component with slide-in animation and tier price calculation (Progression UI)
-- [ ] Implement auto-collection timer with big.js calculations in useEffect (Passive Income)
+- [x] Implement auto-collection timer with big.js calculations in useEffect (Passive Income)
 
 **Enhanced Feedback**
 - [ ] Create particle engine with pool management and purple/cyan gradients (Particle System)

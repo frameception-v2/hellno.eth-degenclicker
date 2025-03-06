@@ -139,6 +139,7 @@ export default function Frame() {
     >
       <div className="w-[300px] mx-auto py-2 px-2">
         <GameCanvas />
+        <AutoCollector />
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ interface GameState {
 interface GameActions {
   handleClick: () => void
   purchaseUpgrade: (tier: keyof GameState['upgrades']) => void
-  calculateAutoProduction: () => number
+  calculateAutoProduction: () => Big
 }
 
 const store = create<GameState & GameActions>()(
@@ -54,8 +54,11 @@ const store = create<GameState & GameActions>()(
       
       calculateAutoProduction: () => {
         const { jacek, hat, crypto } = get().upgrades
-        return jacek * 2 + hat * 5 + crypto * 20
-      }
+        return new Big(jacek * 2).plus(hat * 5).plus(crypto * 20)
+      },
+      addHats: (amount: number) => set(state => ({
+        totalHats: state.totalHats + amount
+      }))
     }),
     {
       name: 'degens-clicker-storage',
