@@ -12,12 +12,19 @@ export default function GameCanvas() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Setup click handler with visual feedback
-    const onClick = () => {
+    // Setup click handler with floating numbers
+    const floatingNumbers: Array<{x: number, y: number, value: number, opacity: number}> = [];
+    let lastTime = 0;
+    
+    const onClick = (e: MouseEvent) => {
       handleClick();
-      // Temporary click feedback until particle system is implemented
-      canvas.style.transform = 'scale(0.95)';
-      setTimeout(() => canvas.style.transform = 'scale(1)', 100);
+      const rect = canvas.getBoundingClientRect();
+      floatingNumbers.push({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        value: 1,
+        opacity: 1
+      });
     };
     
     canvas.addEventListener('click', onClick);
@@ -34,14 +41,32 @@ export default function GameCanvas() {
     let animationFrameId: number;
     
     const render = () => {
-      // Temporary 2D rendering for placeholder
+      // Floating numbers animation system
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw hat emoji
         ctx.font = '48px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillStyle = '#c026d3';
         ctx.fillText('🎩', canvas.width/2, canvas.height/2);
+
+        // Update and draw floating numbers
+        floatingNumbers.forEach((num, index) => {
+          ctx.font = '24px sans-serif';
+          ctx.fillStyle = `rgba(139, 92, 246, ${num.opacity})`; // Purple with fading
+          ctx.fillText(`+${num.value}`, num.x, num.y);
+          
+          // Update position and opacity
+          num.y -= 2;
+          num.opacity -= 0.02;
+          
+          // Remove faded out numbers
+          if (num.opacity <= 0) {
+            floatingNumbers.splice(index, 1);
+          }
+        });
       }
       
       animationFrameId = requestAnimationFrame(render);
