@@ -51,6 +51,7 @@ function ExampleCard() {
     </Card>
   );
 }
+ExampleCard.displayName = 'ExampleCard';
 
 Frame.displayName = 'Frame';
 export default Frame;
@@ -164,18 +165,15 @@ function Frame() {
     </ErrorBoundary>
   ), []);
 
+  const hats = useStore(state => state.hats);
+  const clickCount = useStore(state => state.clickCount);
+  
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">
-      <MemoizedBadge 
-        label="🎩 Hats" 
-        value={useStore(state => state.hats)} 
-      />
-      <MemoizedBadge
-        label="👆 Clicks"
-        value={useStore(state => state.clickCount)}
-      />
+      <MemoizedBadge label="🎩 Hats" value={hats} />
+      <MemoizedBadge label="👆 Clicks" value={clickCount} />
     </div>
-  ), []);
+  ), [hats, clickCount]);
 
   if (!isSDKLoaded) {
     return <div>Loading...</div>;
