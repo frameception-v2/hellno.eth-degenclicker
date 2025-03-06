@@ -38,10 +38,10 @@ async function initializeFonts() {
 
   try {
     const regularFont = await loadFont(
-      join(process.cwd(), "public/fonts/Nunito-Regular.ttf")
+      join(process.cwd(), "public/fonts/Orbitron-Regular.ttf")
     );
     const semiBoldFont = await loadFont(
-      join(process.cwd(), "public/fonts/Nunito-SemiBold.ttf")
+      join(process.cwd(), "public/fonts/Orbitron-SemiBold.ttf") 
     );
 
     imageOptions = {
@@ -72,11 +72,11 @@ async function initializeFonts() {
 export default async function Image() {
   const options = await initializeFonts();
 
-  const BACKGROUND_GRADIENT_START = "#c026d3";
-  const BACKGROUND_GRADIENT_END = "#ef4444";
+  const BACKGROUND_GRADIENT_START = "#0f172a";
+  const BACKGROUND_GRADIENT_END = "#1e1b4b";
   const BACKGROUND_GRADIENT_STYLE = {
     backgroundImage: `linear-gradient(to bottom, ${BACKGROUND_GRADIENT_START}, ${BACKGROUND_GRADIENT_END})`,
-    color: "white",
+    color: "#e879f9",
   };
 
   /*
@@ -93,8 +93,24 @@ Please refer to Satori’s documentation for a list of supported HTML and CSS fe
         tw="h-full w-full flex flex-col justify-center items-center relative"
         style={BACKGROUND_GRADIENT_STYLE}
       >
-        <h1 tw="text-9xl text-center font-semibold">{PROJECT_TITLE}</h1>
-        <h3 tw="text-4xl font-normal">{PROJECT_DESCRIPTION}</h3>
+        {/* Glow effect layers */}
+        <div tw="absolute inset-0 blur-2xl opacity-30" style={{ 
+          background: "linear-gradient(to right, #8b5cf6, #ec4899)",
+        }} />
+        <div tw="absolute inset-0 blur-xl opacity-50" style={{ 
+          background: "linear-gradient(to right, #7c3aed, #db2777)",
+        }} />
+        
+        {/* Main text with multiple shadows */}
+        <h1 tw="text-8xl text-center font-semibold" style={{
+          textShadow: "0 0 10px #c026d3, 0 0 20px #c026d3, 0 0 30px #c026d3",
+          filter: "drop-shadow(0 0 5px rgba(192, 38, 211, 0.5))",
+          letterSpacing: "-0.05em"
+        }}>🎩 {PROJECT_TITLE}</h1>
+        <h3 tw="text-3xl mt-4 font-medium" style={{
+          textShadow: "0 0 8px #60a5fa, 0 0 16px #60a5fa",
+          color: "#93c5fd"
+        }}>▸ {PROJECT_DESCRIPTION} ▸</h3>
       </div>
     ),
     options
