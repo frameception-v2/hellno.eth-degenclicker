@@ -31,4 +31,17 @@ Here's the optimized implementation checklist:
 - [x] Add cyberpunk font-face and final glow animations (Theme Polish)
 - [x] Create production build test plan with device emulation (QA)
 
+**Farcaster Integration**
+- [ ] Add frame analytics using Farcaster hub events
+- [ ] Implement cast reply functionality for sharing progress
+- [ ] Add SIWE (Sign-In With Ethereum) authentication
+- [ ] Create hub query system for tracking social engagement
+- [ ] Add frame-to-cast deep linking functionality
+
+**Multiplayer Features**
+- [ ] Implement leaderboard using Farcaster social graph
+- [ ] Add hat trading system with signed messages
+- [ ] Create collaborative click goals with rewards
+- [ ] Add viral boost mechanics through casts
+
 Dependency order flows vertically through groups. Each task represents ~1-2 hours of focused work with clear completion criteria. The list covers all key aspects from the prompt while maintaining technical cohesion.

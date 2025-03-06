@@ -231,7 +231,7 @@ function Frame() {
             onTouchEnd={() => swipeStart.current = null}
           >
             <PurpleButton 
-              onClick={() => {
+              onClick={async () => {
                 const state = useStore.getState();
                 const stateString = JSON.stringify({
                   v: 1,
@@ -244,7 +244,7 @@ function Frame() {
                 url.searchParams.set('state', base64State);
                 
                 // Add cryptographic hash for verification
-                const hash = sha256(base64State + PROJECT_ID);
+                const hash = await sha256(base64State + PROJECT_ID);
                 url.searchParams.set('hash', hash);
 
                 navigator.clipboard.writeText(url.toString());
