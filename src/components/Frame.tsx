@@ -53,10 +53,7 @@ function ExampleCard() {
 }
 ExampleCard.displayName = 'ExampleCard';
 
-Frame.displayName = 'Frame';
-export default Frame;
-
-const MemoizedBadge = React.memo(
+export default function Frame() {
   ({ label, value }: { label: string; value: number }) => (
     <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
       {label}: {value.toLocaleString()}
@@ -66,6 +63,7 @@ const MemoizedBadge = React.memo(
 );
 
 function Frame() {
+Frame.displayName = 'Frame';
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
 
