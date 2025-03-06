@@ -9,6 +9,7 @@ async function sha256(message: string) {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 import { useStore } from "~/lib/store";
+import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
 import sdk, {
   AddFrame,
@@ -32,7 +33,7 @@ import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION, PROJECT_ID } from "~/lib/constants";
 import GameCanvas from "~/components/GameCanvas";
 import AutoCollector from "~/components/AutoCollector";
-import ErrorBoundary from "~/components/ErrorBoundary";
+import { ErrorBoundary } from "~/components/ErrorBoundary";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 
 function ExampleCard() {
@@ -51,6 +52,9 @@ function ExampleCard() {
   );
 }
 
+Frame.displayName = 'Frame';
+export default Frame;
+
 const MemoizedBadge = React.memo(
   ({ label, value }: { label: string; value: number }) => (
     <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
@@ -60,7 +64,7 @@ const MemoizedBadge = React.memo(
   (prev, next) => prev.value === next.value
 );
 
-export default function Frame() {
+function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
 
@@ -151,15 +155,35 @@ export default function Frame() {
     }
   }, [isSDKLoaded, addFrame]);
 
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+
+  const renderedGameElements = useMemo(() => (
+    <ErrorBoundary>
+      <GameCanvas />
+      <AutoCollector />
+    </ErrorBoundary>
+  ), []);
+
+  const renderedBadges = useMemo(() => (
+    <div className="flex justify-center gap-2 mb-4">
+      <MemoizedBadge 
+        label="🎩 Hats" 
+        value={useStore(state => state.hats)} 
+      />
+      <MemoizedBadge
+        label="👆 Clicks"
+        value={useStore(state => state.clickCount)}
+      />
+    </div>
+  ), []);
+
   if (!isSDKLoaded) {
     return <div>Loading...</div>;
   }
 
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-
   return (
     <React.Fragment>
-      <head>
+      <Head>
         <meta property="og:title" content={PROJECT_TITLE} />
         <meta property="og:description" content={PROJECT_DESCRIPTION} />
         <meta property="og:image" content={`${baseUrl}/api/og`} />
@@ -168,7 +192,7 @@ export default function Frame() {
         <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
         <meta property="fc:frame:post_url" content={`${baseUrl}/api/post`} />
         <meta property="fc:frame:button:1" content="Share Progress" />
-      </head>
+      </Head>
       <div
         style={{ 
           paddingTop: context?.client.safeAreaInsets?.top ?? 0,
