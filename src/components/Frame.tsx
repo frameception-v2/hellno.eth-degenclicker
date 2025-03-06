@@ -23,9 +23,11 @@ import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
-import { PROJECT_TITLE } from "~/lib/constants";
+import { PROJECT_TITLE, PROJECT_DESCRIPTION, PROJECT_ID } from "~/lib/constants";
 import GameCanvas from "~/components/GameCanvas";
 import AutoCollector from "~/components/AutoCollector";
+import ErrorBoundary from "~/components/ErrorBoundary";
+import { PurpleButton } from "~/components/ui/PurpleButton";
 
 function ExampleCard() {
   return (
@@ -157,7 +159,9 @@ export default function Frame() {
         <meta property="og:image" content={`${baseUrl}/api/og`} />
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content={`${baseUrl}/api/og`} />
+        <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
         <meta property="fc:frame:post_url" content={`${baseUrl}/api/post`} />
+        <meta property="fc:frame:button:1" content="Share Progress" />
       </head>
       <div
         style={{ 
@@ -170,8 +174,8 @@ export default function Frame() {
         <div className="w-[300px] mx-auto py-2 px-2">
           {useMemo(() => (
             <ErrorBoundary>
-              <React.memo(GameCanvas) />
-              <React.memo(AutoCollector) />
+              <GameCanvas />
+              <AutoCollector />
             </ErrorBoundary>
           ), [])}
           {useMemo(() => (
