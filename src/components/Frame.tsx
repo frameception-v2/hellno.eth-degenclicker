@@ -46,15 +46,6 @@ function ExampleCard() {
 }
 ExampleCard.displayName = 'ExampleCard';
 
-export default function Frame() {
-  ({ label, value }: { label: string; value: number }) => (
-    <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
-      {label}: {value.toLocaleString()}
-    </Badge>
-  ),
-  (prev, next) => prev.value === next.value
-);
-
 const Frame = () => {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
