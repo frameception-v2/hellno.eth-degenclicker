@@ -169,10 +169,10 @@ export default function Frame() {
       >
         <div className="w-[300px] mx-auto py-2 px-2">
           {useMemo(() => (
-            <>
+            <ErrorBoundary>
               <React.memo(GameCanvas) />
               <React.memo(AutoCollector) />
-            </>
+            </ErrorBoundary>
           ), [])}
           {useMemo(() => (
             <div className="flex justify-center gap-2 mb-4">
