@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
+import GameCanvas from "~/components/GameCanvas";
 
 function ExampleCard() {
   return (
@@ -137,7 +138,7 @@ export default function Frame() {
       }}
     >
       <div className="w-[300px] mx-auto py-2 px-2">
-        <ExampleCard />
+        <GameCanvas />
       </div>
     </div>
   );
