@@ -1,20 +1,44 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { useViewport } from '~/lib/hooks/useViewport';
+import { useStore } from '~/store';
 
 export default function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { width, height } = useViewport();
   const handleClick = useStore(state => state.handleClick);
 
+  // Handle resize and orientation change
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const setCanvasDimensions = () => {
+      // Use window's visual viewport to handle mobile zoom
+      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+      
+      // Maintain 1:1 aspect ratio for square canvas
+      const size = Math.min(vw * 0.9, vh * 0.4);
+      
+      // Scale for high DPI displays
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      ctx?.scale(dpr, dpr);
+    };
+
+    // Initial setup
+    setCanvasDimensions();
+    
+    // Add event listeners
+    window.addEventListener('resize', setCanvasDimensions);
+    window.addEventListener('orientationchange', setCanvasDimensions);
+
     // Setup click handler with floating numbers
     const floatingNumbers: Array<{x: number, y: number, value: number, opacity: number}> = [];
-    const lastTime = 0;
     
     const onClick = (e: MouseEvent) => {
       handleClick();
@@ -28,7 +52,13 @@ export default function GameCanvas() {
     };
     
     canvas.addEventListener('click', onClick);
-    return () => canvas.removeEventListener('click', onClick);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', setCanvasDimensions);
+      window.removeEventListener('orientationchange', setCanvasDimensions);
+      canvas.removeEventListener('click', onClick);
+    };
 
     // WebGL context setup
     const gl = canvas.getContext('webgl2') || canvas.getContext('experimental-webgl');
@@ -79,9 +109,7 @@ export default function GameCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      width={width}
-      height={height}
-      className="absolute top-0 left-0 w-full h-full"
+      className="bg-background rounded-xl border-2 border-purple-400 shadow-lg touch-none"
     />
   );
 }
