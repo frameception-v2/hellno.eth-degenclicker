@@ -202,24 +202,8 @@ function Frame() {
         }}
       >
         <div className="w-[300px] mx-auto py-2 px-2">
-          {useMemo(() => (
-            <ErrorBoundary>
-              <GameCanvas />
-              <AutoCollector />
-            </ErrorBoundary>
-          ), [])}
-          {useMemo(() => (
-            <div className="flex justify-center gap-2 mb-4">
-              <MemoizedBadge 
-                label="🎩 Hats" 
-                value={useStore(state => state.hats)} 
-              />
-              <MemoizedBadge
-                label="👆 Clicks"
-                value={useStore(state => state.clickCount)}
-              />
-            </div>
-          ), [])}
+          {renderedGameElements}
+          {renderedBadges}
           <div 
             className="mt-4 flex justify-center"
             onTouchStart={(e) => {
