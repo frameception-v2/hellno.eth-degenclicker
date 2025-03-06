@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useState } from "react";
+import { sha256 } from 'js-sha256';
 import sdk, {
   AddFrame,
   SignIn as SignInCore,
