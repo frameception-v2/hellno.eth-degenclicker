@@ -2,6 +2,8 @@
 
 import { useEffect, useCallback, useState } from "react";
 import { sha256 } from 'js-sha256';
+import { useStore } from "~/store";
+import { Badge } from "~/components/ui/badge";
 import sdk, {
   AddFrame,
   SignIn as SignInCore,
@@ -159,6 +161,14 @@ export default function Frame() {
         <div className="w-[300px] mx-auto py-2 px-2">
           <GameCanvas />
           <AutoCollector />
+          <div className="flex justify-center gap-2 mb-4">
+            <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
+              🎩 Hats: {useStore(state => state.hats.toLocaleString())}
+            </Badge>
+            <Badge variant="secondary" className="text-purple-300 bg-purple-950/50">
+              👆 Clicks: {useStore(state => state.clickCount.toLocaleString())}
+            </Badge>
+          </div>
           <div 
             className="mt-4 flex justify-center"
             onTouchStart={(e) => {
