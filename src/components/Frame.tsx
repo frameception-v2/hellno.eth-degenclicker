@@ -55,8 +55,7 @@ export default function Frame() {
   (prev, next) => prev.value === next.value
 );
 
-function Frame() {
-Frame.displayName = 'Frame';
+const Frame = () => {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
 
