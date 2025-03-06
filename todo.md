@@ -16,6 +16,7 @@ Here's the optimized implementation checklist:
 **Enhanced Feedback**
 - [x] Create particle engine with pool management and purple/cyan gradients (Particle System)
 - [x] Add haptic feedback patterns for clicks/purchases (Mobile UX)
+- [x] Implement vibration patterns: Short pulse on click, Long pulse on purchase
 - [ ] Implement state serialization/deserialization with URL params (Sharing)
 
 **Polish & Mobile**
