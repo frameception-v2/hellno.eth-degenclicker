@@ -79,6 +79,11 @@ export default function Frame() {
         addFrame();
       }
 
+      // Setup haptic feedback patterns
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate;
+      }
+
       sdk.on("frameAdded", ({ notificationDetails }) => {
         setAdded(true);
       });
