@@ -14,7 +14,7 @@ export default function GameCanvas() {
 
     // Setup click handler with floating numbers
     const floatingNumbers: Array<{x: number, y: number, value: number, opacity: number}> = [];
-    let lastTime = 0;
+    const lastTime = 0;
     
     const onClick = (e: MouseEvent) => {
       handleClick();
@@ -74,7 +74,7 @@ export default function GameCanvas() {
 
     render();
     return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+  }, [handleClick]);
 
   return (
     <canvas
