@@ -22,6 +22,7 @@ import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 import GameCanvas from "~/components/GameCanvas";
+import AutoCollector from "~/components/AutoCollector";
 
 function ExampleCard() {
   return (
