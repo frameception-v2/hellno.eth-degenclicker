@@ -11,8 +11,6 @@ const MemoizedBadge = React.memo(({ label, value }: { label: string; value: numb
   </Badge>
 ));
 import sdk, {
-  AddFrame,
-  SignIn as SignInCore,
   type Context,
 } from "@farcaster/frame-sdk";
 import {
@@ -66,9 +64,9 @@ const Frame = () => {
       await sdk.actions.addFrame();
     } catch (error) {
       if (error instanceof Error) {
-        if ('code' in error && error.code === AddFrame.ErrorCode.RejectedByUser) {
+        if ('code' in error && error.code === 'RejectedByUser') {
           setAddFrameResult(`Not added: User rejected request`);
-        } else if ('code' in error && error.code === AddFrame.ErrorCode.InvalidDomainManifest) {
+        } else if ('code' in error && error.code === 'InvalidDomainManifest') {
           setAddFrameResult(`Not added: Invalid domain manifest`);
         } else {
           setAddFrameResult(`Error: ${error.message}`);
