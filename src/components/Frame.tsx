@@ -10,9 +10,8 @@ const MemoizedBadge = React.memo(({ label, value }: { label: string; value: numb
     {label}: {value.toLocaleString()}
   </Badge>
 ));
-import sdk, {
-  type Context,
-} from "@farcaster/frame-sdk";
+import sdk from "@farcaster/frame-sdk";
+import type { FrameContext } from "@farcaster/frame-sdk";
 import {
   Card,
   CardHeader,
@@ -52,7 +51,7 @@ ExampleCard.displayName = 'ExampleCard';
 
 const Frame = () => {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-  const [context, setContext] = useState<Context.FrameContext>();
+  const [context, setContext] = useState<FrameContext>();
 
   const [added, setAdded] = useState(false);
   const swipeStart = useRef<{x: number; y: number} | null>(null);
@@ -170,7 +169,7 @@ const Frame = () => {
   ), []);
 
   const hats = useStore(state => state.hats);
-  const clickCount = useStore(state => state.manualClicks);
+  const manualClicks = useStore(state => state.manualClicks);
   
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">
@@ -238,7 +237,7 @@ const Frame = () => {
               onClick={async () => {
                 const state = useStore.getState();
                 const stateString = JSON.stringify({
-                  c: state.manualClicks,
+                  c: state.manualClicks, 
                   h: state.hats,
                   t: state.lastCollection
                 });
