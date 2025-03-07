@@ -4,6 +4,13 @@ import React, { useEffect, useCallback, useState, useRef, useMemo } from "react"
 import { useStore } from "~/lib/store";
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
+import React from "react";
+
+const MemoizedBadge = React.memo(({ label, value }: { label: string; value: number }) => (
+  <Badge variant="outline" className="text-sm">
+    {label}: {value.toLocaleString()}
+  </Badge>
+));
 import sdk, {
   AddFrame,
   SignIn as SignInCore,
@@ -164,7 +171,7 @@ const Frame = () => {
   ), []);
 
   const hats = useStore(state => state.hats);
-  const clickCount = useStore(state => state.clickCount);
+  const clickCount = useStore(state => state.manualClicks);
   
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">

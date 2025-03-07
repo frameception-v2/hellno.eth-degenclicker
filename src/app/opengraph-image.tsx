@@ -49,13 +49,13 @@ async function initializeFonts() {
       height: 800,
       fonts: [
         {
-          name: "Nunito",
+          name: "Orbitron",
           data: regularFont,
           weight: 400,
           style: "normal",
         },
         {
-          name: "Nunito",
+          name: "Orbitron", 
           data: semiBoldFont,
           weight: 600,
           style: "normal",
