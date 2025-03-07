@@ -65,12 +65,14 @@ const Frame = () => {
     try {
       await sdk.actions.addFrame();
     } catch (error) {
-      if (error instanceof AddFrame.RejectedByUser) {
-        setAddFrameResult(`Not added: ${error.message}`);
-      }
-
-      if (error instanceof AddFrame.InvalidDomainManifest) {
-        setAddFrameResult(`Not added: ${error.message}`);
+      if (error instanceof Error) {
+        if ('code' in error && error.code === AddFrame.ErrorCode.RejectedByUser) {
+          setAddFrameResult(`Not added: User rejected request`);
+        } else if ('code' in error && error.code === AddFrame.ErrorCode.InvalidDomainManifest) {
+          setAddFrameResult(`Not added: Invalid domain manifest`);
+        } else {
+          setAddFrameResult(`Error: ${error.message}`);
+        }
       }
 
       setAddFrameResult(`Error: ${error}`);
@@ -238,7 +240,7 @@ const Frame = () => {
               onClick={async () => {
                 const state = useStore.getState();
                 const stateString = JSON.stringify({
-                  c: state.clickCount,
+                  c: state.manualClicks,
                   h: state.hats,
                   t: state.lastCollection
                 });

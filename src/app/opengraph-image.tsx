@@ -28,10 +28,10 @@ async function loadFont(fontPath: string): Promise<Buffer> {
 }
 
 // Create reusable options object with proper type
-let imageOptions: ImageResponseOptions | null = null;
+let imageOptions: ConstructorParameters<typeof ImageResponse>[1] | null = null;
 
 // Initialize fonts
-async function initializeFonts() {
+async function initializeFonts(): Promise<ConstructorParameters<typeof ImageResponse>[1]> {
   if (imageOptions) return imageOptions;
 
   try {
