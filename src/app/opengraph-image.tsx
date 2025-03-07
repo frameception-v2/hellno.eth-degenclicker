@@ -15,11 +15,9 @@ async function loadFont(fontPath: string): Promise<Buffer> {
     // Fallback to loading from absolute path
     try {
       const absolutePath = join(
-        __dirname,
-        "..",
-        "..",
+        process.cwd(),
         "public",
-        "fonts",
+        "fonts", 
         fontPath.split("/").pop()!
       );
       return readFileSync(absolutePath);
@@ -29,8 +27,8 @@ async function loadFont(fontPath: string): Promise<Buffer> {
   }
 }
 
-// Create reusable options object
-let imageOptions: any = null;
+// Create reusable options object with proper type
+let imageOptions: ImageResponseOptions | null = null;
 
 // Initialize fonts
 async function initializeFonts() {

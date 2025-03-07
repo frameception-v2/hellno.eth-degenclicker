@@ -4,7 +4,6 @@ import React, { useEffect, useCallback, useState, useRef, useMemo } from "react"
 import { useStore } from "~/lib/store";
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
-import React from "react";
 
 const MemoizedBadge = React.memo(({ label, value }: { label: string; value: number }) => (
   <Badge variant="outline" className="text-sm">
