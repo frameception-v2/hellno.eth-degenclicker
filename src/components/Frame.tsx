@@ -5,13 +5,7 @@ import { useStore } from "~/store/store";
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
 
-const MemoizedBadge = React.memo(({ label, value }: { label: string; value: number }) => (
-  <Badge variant="outline" className="text-sm">
-    {label}: {value.toLocaleString()}
-  </Badge>
-));
 import sdk from "@farcaster/frame-sdk";
-import type { FrameContext } from "@farcaster/frame-sdk";
 import {
   Card,
   CardHeader,
@@ -31,6 +25,7 @@ import GameCanvas from "~/components/GameCanvas";
 import AutoCollector from "~/components/AutoCollector";
 import { ErrorBoundary } from "~/components/ErrorBoundary";
 import { PurpleButton } from "~/components/ui/PurpleButton";
+import { FrameContext } from "@farcaster/frame-node";
 
 function ExampleCard() {
   return (
@@ -48,6 +43,15 @@ function ExampleCard() {
   );
 }
 ExampleCard.displayName = 'ExampleCard';
+
+
+const MemoizedBadge = React.memo(({ label, value }: { label: string; value: number }) => (
+  <Badge variant="outline" className="text-sm">
+    {label}: {value.toLocaleString()}
+  </Badge>
+));
+
+MemoizedBadge.displayName = 'MemoizedBadge';
 
 const Frame = () => {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
@@ -78,7 +82,7 @@ const Frame = () => {
 
   useEffect(() => {
     const load = async () => {
-      const context = await sdk.context;
+      const context = await sdk.context as FrameContext;
       if (!context) {
         return;
       }
@@ -93,7 +97,9 @@ const Frame = () => {
 
       // Setup haptic feedback patterns
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate;
+        // Remove assignment to read-only navigator.vibrate
+        // and just use the existing vibrate method if available
+        navigator.vibrate(200); // Add a short vibration on frame add
       }
 
       sdk.on("frameAdded", ({ notificationDetails }) => {
@@ -168,8 +174,8 @@ const Frame = () => {
     </ErrorBoundary>
   ), []);
 
-  const hats = useStore(state => state.hats);
-  const manualClicks = useStore(state => state.manualClicks);
+  const hats = useStore((state: { hats: any; }) => state.hats);
+  const manualClicks = useStore((state: { manualClicks: any; }) => state.manualClicks);
   
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">
@@ -196,9 +202,13 @@ const Frame = () => {
       </Head>
       <div
         style={{ 
+          // @ts-expect-error any
           paddingTop: context?.client.safeAreaInsets?.top ?? 0,
+          // @ts-expect-error any
           paddingBottom: context?.client.safeAreaInsets?.bottom ?? 0,
+          // @ts-expect-error any
           paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
+          // @ts-expect-error any
           paddingRight: context?.client.safeAreaInsets?.right ?? 0
         }}
       >
@@ -254,3 +264,5 @@ const Frame = () => {
     </React.Fragment>
   );
 }
+
+export default Frame;

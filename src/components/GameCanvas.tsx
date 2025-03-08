@@ -5,7 +5,7 @@ import { useStore } from '~/lib/store';
 
 export default function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const handleClick = useStore(state => state.handleClick);
+  const handleClick = useStore((state: { handleClick: any; }) => state.handleClick);
 
   // Handle resize and orientation change
   useEffect(() => {
@@ -53,13 +53,6 @@ export default function GameCanvas() {
     
     canvas.addEventListener('click', onClick);
 
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', setCanvasDimensions);
-      window.removeEventListener('orientationchange', setCanvasDimensions);
-      canvas.removeEventListener('click', onClick);
-    };
-
     // WebGL context setup
     const gl = canvas.getContext('webgl2') || canvas.getContext('experimental-webgl');
     if (!gl) {
@@ -103,7 +96,14 @@ export default function GameCanvas() {
     };
 
     render();
-    return () => cancelAnimationFrame(animationFrameId);
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+      window.removeEventListener('resize', setCanvasDimensions);
+      window.removeEventListener('orientationchange', setCanvasDimensions);
+      canvas.removeEventListener('click', onClick);
+    };
   }, [handleClick]);
 
   return (

@@ -2,11 +2,10 @@
 
 import { useEffect } from "react";
 import { useStore } from "~/lib/store";
-import Big from "big.js";
 
 export default function AutoCollector() {
-  const calculateAutoProduction = useStore((state) => state.calculateAutoProduction);
-  const addHats = useStore((state) => state.addHats);
+  const calculateAutoProduction = useStore((state: { calculateAutoProduction: any; }) => state.calculateAutoProduction);
+  const addHats = useStore((state: { addHats: any; }) => state.addHats);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
