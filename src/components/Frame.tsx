@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useCallback, useState, useRef, useMemo } from "react";
-import { useStore } from "~/lib/store";
+import { useStore } from "~/store/store";
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
 

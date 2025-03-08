@@ -104,7 +104,7 @@ Please refer to Satori’s documentation for a list of supported HTML and CSS fe
           textShadow: "0 0 10px #c026d3, 0 0 20px #c026d3, 0 0 30px #c026d3",
           filter: "drop-shadow(0 0 5px rgba(192, 38, 211, 0.5))",
           letterSpacing: "-0.05em"
-        }}>🎩 {PROJECT_TITLE}</h1>
+        }}>🎩 DegenClicker</h1>
         <h3 tw="text-3xl mt-4 font-medium" style={{
           textShadow: "0 0 8px #60a5fa, 0 0 16px #60a5fa",
           color: "#93c5fd"
