@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useCallback, useState, useRef, useMemo } from "react";
-import { useStore } from "~/store/store";
+import { useStore, State } from "~/store/store";
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
 
@@ -17,7 +17,6 @@ import {
 import { config } from "~/components/providers/WagmiProvider";
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
-import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
@@ -46,7 +45,7 @@ ExampleCard.displayName = 'ExampleCard';
 
 
 const MemoizedBadge = React.memo(({ label, value }: { label: string; value: number }) => (
-  <Badge variant="outline" className="text-sm">
+  <Badge className="text-sm">
     {label}: {value.toLocaleString()}
   </Badge>
 ));
@@ -58,7 +57,7 @@ const Frame = () => {
   const [context, setContext] = useState<FrameContext>();
 
   const [added, setAdded] = useState(false);
-  const swipeStart = useRef<{x: number; y: number} | null>(null);
+  const swipeStart = useRef<{x?: number; y?: number} | null>(null);
 
   const [_, setAddFrameResult] = useState("");
 
@@ -174,8 +173,8 @@ const Frame = () => {
     </ErrorBoundary>
   ), []);
 
-  const hats = useStore((state: { hats: number }) => state.hats);
-  const manualClicks = useStore((state: { manualClicks: number }) => state.manualClicks);
+  const hats = useStore((state: State) => state.hats);
+  const manualClicks = useStore((state: State) => state.manualClicks);
   
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">
@@ -228,7 +227,7 @@ const Frame = () => {
               const deltaY = touch.clientY - swipeStart.current.y;
               
               // Only trigger horizontal swipes
-              if (Math.abs(deltaX) > Math.abs(deltaY)) {
+              if (swipeStart.current && Math.abs(deltaX) > Math.abs(deltaY)) {
                 e.preventDefault();
                 if (Math.abs(deltaX) > 30) { // 30px threshold
                   const panel = document.querySelector("[data-upgrade-panel]");
