@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
-import { readFileSync } from "fs";
+import { readFile } from "fs/promises";
 import { join } from "path";
 
 export const alt = PROJECT_TITLE;
@@ -9,18 +9,12 @@ export const contentType = "image/png";
 // Function to load font with error handling
 async function loadFont(fontPath: string): Promise<Buffer> {
   try {
-    const fontData = readFileSync(fontPath);
-    return fontData;
+    return await readFile(fontPath);
   } catch (error) {
     // Fallback to loading from absolute path
     try {
-      const absolutePath = join(
-        process.cwd(),
-        "public",
-        "fonts", 
-        fontPath.split("/").pop()!
-      );
-      return readFileSync(absolutePath);
+      const absolutePath = join(process.cwd(), "public", "fonts", fontPath.split("/").pop()!);
+      return await readFile(absolutePath);
     } catch (fallbackError) {
       throw new Error(`Failed to load font ${fontPath}: ${error}`);
     }

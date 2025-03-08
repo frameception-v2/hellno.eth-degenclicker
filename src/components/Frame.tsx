@@ -60,7 +60,7 @@ const Frame = () => {
   const [added, setAdded] = useState(false);
   const swipeStart = useRef<{x: number; y: number} | null>(null);
 
-  const [addFrameResult, setAddFrameResult] = useState("");
+  const [_, setAddFrameResult] = useState("");
 
   const addFrame = useCallback(async () => {
     try {
@@ -163,7 +163,7 @@ const Frame = () => {
         sdk.removeAllListeners();
       };
     }
-  }, [isSDKLoaded, addFrame]);
+  }, [isSDKLoaded]);
 
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
@@ -174,8 +174,8 @@ const Frame = () => {
     </ErrorBoundary>
   ), []);
 
-  const hats = useStore((state: { hats: any; }) => state.hats);
-  const manualClicks = useStore((state: { manualClicks: any; }) => state.manualClicks);
+  const hats = useStore((state: { hats: number }) => state.hats);
+  const manualClicks = useStore((state: { manualClicks: number }) => state.manualClicks);
   
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">
