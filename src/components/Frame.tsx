@@ -57,7 +57,7 @@ const Frame = () => {
   const [context, setContext] = useState<FrameContext>();
 
   const [added, setAdded] = useState(false);
-  const swipeStart = useRef<{x?: number; y?: number} | null>(null);
+  const swipeStart = useRef<{x: number; y: number} | null>(null);
 
   const [_, setAddFrameResult] = useState("");
 
@@ -65,7 +65,7 @@ const Frame = () => {
     try {
       await sdk.actions.addFrame();
     } catch (error) {
-      if (error instanceof Error) {
+      if (error && typeof error === 'object') {
         if ('code' in error && error.code === 'RejectedByUser') {
           setAddFrameResult(`Not added: User rejected request`);
         } else if ('code' in error && error.code === 'InvalidDomainManifest') {
@@ -223,8 +223,8 @@ const Frame = () => {
             onTouchMove={(e) => {
               if (!swipeStart.current) return;
               const touch = e.touches[0];
-              const deltaX = touch.clientX - swipeStart.current.x;
-              const deltaY = touch.clientY - swipeStart.current.y;
+              const deltaX = touch.clientX - (swipeStart.current?.x || 0);
+              const deltaY = touch.clientY - (swipeStart.current?.y || 0);
               
               // Only trigger horizontal swipes
               if (swipeStart.current && Math.abs(deltaX) > Math.abs(deltaY)) {
