@@ -174,9 +174,9 @@ const Frame = () => {
   const renderedBadges = useMemo(() => (
     <div className="flex justify-center gap-2 mb-4">
       <MemoizedBadge label="🎩 Hats" value={hats} />
-      <MemoizedBadge label="👆 Clicks" value={clickCount} />
+      <MemoizedBadge label="👆 Clicks" value={manualClicks} />
     </div>
-  ), [hats, clickCount]);
+  ), [hats, manualClicks]);
 
   if (!isSDKLoaded) {
     return <div>Loading...</div>;
