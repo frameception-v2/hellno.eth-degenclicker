@@ -72,7 +72,7 @@ const Frame = () => {
         } else if ('code' in error && error.code === 'InvalidDomainManifest') {
           setAddFrameResult(`Not added: Invalid domain manifest`);
         } else {
-          setAddFrameResult(`Error: ${error.message}`);
+          setAddFrameResult(`Error: ${error}`);
         }
       }
 
