@@ -35,10 +35,11 @@ export function UpgradePanel({
     },
   ];
 
-  const togglePanel = useCallback((open: boolean) => {
+  const togglePanel = useCallback(() => {
     const panel = document.querySelector("[data-upgrade-panel]");
     if (panel) {
-      panel.classList.toggle("translate-x-full", !open);
+      const isOpen = !panel.classList.contains("translate-x-full");
+      panel.classList.toggle("translate-x-full", !isOpen);
       // Add haptic feedback
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate(50);
@@ -77,7 +78,10 @@ export function UpgradePanel({
         </div>
         
         <PurpleButton
-          onClick={togglePanel}
+          onClick={(e) => {
+            e.preventDefault();
+            togglePanel();
+          }}
           className="rounded-l-none px-2 py-4"
         >
           ▸
