@@ -6,8 +6,6 @@ type State = ReturnType<typeof useStore>;
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
 
-import sdk from "@farcaster/frame-js-sdk";
-import type { FrameContext } from "@farcaster/frame-js-sdk";
 import {
   Card,
   CardHeader,
@@ -16,7 +14,6 @@ import {
   CardContent,
 } from "~/components/ui/card";
 import { config } from "~/components/providers/WagmiProvider";
-import { viem } from "viem"; // Required by Wagmi
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
 import { createStore } from "mipd";
@@ -27,6 +24,7 @@ import AutoCollector from "~/components/AutoCollector";
 import { ErrorBoundary } from "~/components/ErrorBoundary";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 import { FrameContext } from "@farcaster/frame-node";
+import sdk from "@farcaster/frame-sdk";
 
 function ExampleCard() {
   return (
@@ -164,7 +162,7 @@ const Frame = () => {
         sdk.removeAllListeners();
       };
     }
-  }, [isSDKLoaded]);
+  }, [isSDKLoaded, addFrame]);
 
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
