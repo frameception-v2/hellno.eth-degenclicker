@@ -13,7 +13,7 @@ async function loadFont(fontPath: string): Promise<Buffer> {
   } catch (error) {
     // Fallback to loading from absolute path
     try {
-      const absolutePath = join(process.cwd(), fontPath.replace(/^public\//, ""));
+      const absolutePath = new URL(fontPath, import.meta.url).pathname;
       return await readFile(absolutePath);
     } catch (fallbackError) {
       throw new Error(`Failed to load font ${fontPath}: ${error}`);

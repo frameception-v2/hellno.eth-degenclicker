@@ -6,7 +6,8 @@ type State = ReturnType<typeof useStore>;
 import Head from "next/head";
 import { Badge } from "~/components/ui/badge";
 
-import sdk from "@farcaster/frame-sdk";
+import sdk from "@farcaster/frame-js-sdk";
+import type { FrameContext } from "@farcaster/frame-js-sdk";
 import {
   Card,
   CardHeader,
@@ -14,8 +15,8 @@ import {
   CardDescription,
   CardContent,
 } from "~/components/ui/card";
-
 import { config } from "~/components/providers/WagmiProvider";
+import { viem } from "viem"; // Required by Wagmi
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
 import { createStore } from "mipd";
@@ -127,7 +128,7 @@ const Frame = () => {
       });
 
       console.log("Calling ready");
-      sdk.actions.ready({});
+      sdk.actions.ready();
 
       // Load state from localStorage or URL
       const urlParams = new URLSearchParams(window.location.search);
